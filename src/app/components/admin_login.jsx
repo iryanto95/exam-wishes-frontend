@@ -74,7 +74,7 @@ var Main = React.createClass({
                 <Paper zDepth={5} style={styles.paper}>
                     <div style={styles.appLogo}></div>
                     <TextField hintText="Username" style={styles.username} />
-                    <TextField hintText="Password" style={styles.password} />
+                    <TextField hintText="Password" style={styles.password} type="password" />
                     <RaisedButton label="Sign In" primary={true} style={styles.submitButton} />
                     <a href='#' style={styles.forgotPassword}>Forgot Password?</a>
                 </Paper>
