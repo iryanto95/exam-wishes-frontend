@@ -22,7 +22,7 @@ var Main = React.createClass({
 
     componentWillMount: function() {
         ThemeManager.setPalette({
-            accent1Color: Colors.indigoA700
+            accent1Color: '#1965BE'
         });
     },
 
@@ -32,14 +32,15 @@ var Main = React.createClass({
                 background: ThemeManager.getCurrentTheme().palette.accent1Color + ' url(images/geometry_pattern.png) center center repeat'
             },
             paper: {
-                width: '100%',
+                width: '90%',
                 maxWidth: '800px',
-                margin: '0 auto',
+                margin: '0',
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-                padding: '64px 0'
+                padding: '64px 0',
+                boxSizing: 'border-box'
             },
             appLogo: {
                 width: '192px',
@@ -74,7 +75,7 @@ var Main = React.createClass({
                     <div style={styles.appLogo}></div>
                     <TextField hintText="Username" style={styles.username} />
                     <TextField hintText="Password" style={styles.password} />
-                    <RaisedButton label="Primary" primary={true} style={styles.submitButton} />
+                    <RaisedButton label="Sign In" primary={true} style={styles.submitButton} />
                     <a href='#' style={styles.forgotPassword}>Forgot Password?</a>
                 </Paper>
             </div>
