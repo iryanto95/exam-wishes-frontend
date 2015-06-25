@@ -22,10 +22,6 @@ module.exports = {
     debug: true,
     // A separate bundle will be generated for each
     // bundle config in the list below
-    bundleConfigs: [{
-      entries: src + '/app/app.jsx',
-      dest: dest,
-      outputName: 'app.js'
-    }]
+    bundleConfigs: [{entries: src + '/app/Customer_mainApp.jsx', dest: dest, outputName: 'Customer_mainApp.js'}]
   }
 };
