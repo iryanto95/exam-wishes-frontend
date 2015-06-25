@@ -31,7 +31,7 @@ var Package = React.createClass({
 			padding: '16px',
 			textAlign: 'left'
 		};
-
+x
 		return(
 			<Paper zDepth={1} rounded={false} style={paperStyle}>
 				<img style={imgStyle} draggable="false" src={this.props.imgUrl}/>
