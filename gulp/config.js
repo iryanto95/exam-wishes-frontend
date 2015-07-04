@@ -26,6 +26,7 @@ module.exports = {
                     {entries: src + '/app/app.jsx', dest: dest, outputName: 'app.js'},
                     {entries: src + '/app/admin_login_app.jsx', dest: dest, outputName: 'admin_login_app.js'},
                     {entries: src + '/app/customer_login_app.jsx', dest: dest, outputName: 'customer_login_app.js'},
-                    {entries: src + '/app/admin_dashboard_app.jsx', dest: dest, outputName: 'admin_dashboard_app.js'}]
+                    {entries: src + '/app/admin_dashboard_app.jsx', dest: dest, outputName: 'admin_dashboard_app.js'},
+                    {entries: src + '/app/admin_setting_app.jsx', dest: dest, outputName: 'admin_setting_app.js'}]
   	}
 };

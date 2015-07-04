@@ -83,7 +83,7 @@ var Main = React.createClass({
     return (
       <div>
         <div style={{marginBottom: '50px'}}>
-        <AppBar style={containerStyle } title='Title' onLeftIconButtonTouchTap={this.leftNavOpen}/>
+        <AppBar style={containerStyle } title='Dashboard' onLeftIconButtonTouchTap={this.leftNavOpen}/>
         <LeftNav ref='menu' docked={false} menuItems={menuItems} />
         </div>
         <div style={menuStyle2}>
