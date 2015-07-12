@@ -197,6 +197,32 @@ body {
 	margin: 0 auto;
 }
 
-.fht-tbody {
-	overflow: auto;
+
+
+
+
+
+
+
+
+
+.adminSetting {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex; 
+
+  -webkit-flex-direction: column;
+  flex-direction: column;
+
+  height: 100vh;
+}
+
+.adminSetting__content {
+  position: relative;
+  
+  -webkit-flex-grow: 1;
+  -moz-flex-grow: 1;
+  flex-grow: 1;  
 }
