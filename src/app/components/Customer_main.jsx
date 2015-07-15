@@ -11,6 +11,8 @@ var DropDownMenu = require('material-ui/lib/drop-down-menu');
 var FlatButton = require('material-ui/lib/flat-button');
 var Slider = require('react-slick');
 var MediaQuery = require('react-responsive');
+var Dialog = require('material-ui/lib/dialog');
+var IconButton = require('material-ui/lib/icon-button');
 
 var Package = React.createClass({
 	childContextTypes: {
@@ -21,6 +23,10 @@ var Package = React.createClass({
 		return {
 			muiTheme: ThemeManager.getCurrentTheme()
 		};
+	},
+
+	showDialog: function() {
+		this.props.showDialog(this.props.index);
 	},
 
 	render: function() {
@@ -36,49 +42,32 @@ var Package = React.createClass({
 		};
 
 		return(
-			<Paper className="packageClass" zDepth={1} rounded={false}>
-				<img style={imgStyle} draggable="false" src={this.props.imgUrl}/>
-				<div style={packageContentStyle}>
-					<div style={{width: '70%', display:'inline-block'}}>
-						<h1>{this.props.title}</h1>
-						<p>{this.props.description}</p>
+			<div>
+				<Paper className="packageClass" zDepth={1} rounded={false} onClick={this.showDialog}>
+					<img style={imgStyle} draggable="false" src={this.props.imgUrl}/>
+					<div style={packageContentStyle}>
+						<div style={{width: '70%', display:'inline-block'}}>
+							<h1>{this.props.title}</h1>
+							<p>Quantity Left: {this.props.quantity}</p>
+						</div>
+						<div style={{display: 'inline-block', float: 'right', marginTop: '16px'}}>
+							<h1 style={{fontColor: '#E53935'}}>{this.props.price}</h1>
+						</div>
 					</div>
-					<div style={{display: 'inline-block', float: 'right', marginTop: '16px'}}>
-						<h1 style={{fontColor: '#E53935'}}>{this.props.price}</h1>
-					</div>
-				</div>
-			</Paper>
+				</Paper>
+			</div>
 		);
 	}
 });
 
 var PackagesCarousel = React.createClass({
 	render: function () {
-		var settings = {
-			arrows: true,
-			dots: false,
-			infinite: true,
-			speed: 500,
-			slidesToShow: 3,
-			slidesToScroll: 1
-		};
-
-		var settingsv = {
-			arrows: false,
-			dots: false,
-			infinite: false,
-			speed: 500,
-			slidesToShow: 1,
-			slidesToScroll: 0,
-			vertical: true
-		};
-
 		return (
 			<div>
 				{this.props.width > 800 ?
 					<div>
 						{this.props.packages ?
-						<Slider {...settings} style={{width: '1000px'}}>
+						<Slider {...this.props.settings}>
 							{this.props.packages}
 						</Slider>
 						: <div></div>}
@@ -86,6 +75,28 @@ var PackagesCarousel = React.createClass({
 				: <div>
 					{this.props.packages ?
 						<div>{this.props.packages}</div>
+					: <div></div>}
+					</div>}
+			</div>
+		);
+	}
+});
+
+var PackageImagesCarousel = React.createClass({
+	render: function () {
+		return (
+			<div>
+				{this.props.width > 800 ?
+					<div>
+						{this.props.images ?
+						<Slider {...this.props.settings}>
+							{this.props.images}
+						</Slider>
+						: <div></div>}
+					</div>
+				: <div>
+					{this.props.images ?
+						<div>{this.props.images}</div>
 					: <div></div>}
 					</div>}
 			</div>
@@ -223,10 +234,10 @@ var PackageForm = React.createClass({
 						</div>
 						<div style={{textAlign:'center'}}>
 							<div style={{display:'inline-block', width:'15%', marginRight:'16px'}}>
-								<RaisedButton label="Add" primary={true} onClick={this.addOrder}/>
+								<RaisedButton label="Add" secondary={true} onClick={this.addOrder}/>
 							</div>
 							<div style={{display:'inline-block', width:'15%', marginLeft:'16px'}}>
-								<FlatButton label="Clear" primary={true} onClick={this.clearForm}/>
+								<FlatButton label="Clear" secondary={true} onClick={this.clearForm}/>
 							</div>
 						</div>
 					</div>
@@ -256,10 +267,10 @@ var PackageForm = React.createClass({
 						}
 						<div style={{textAlign:'center'}}>
 							<div style={{display:'inline-block', marginRight:'16px'}}>
-								<RaisedButton label="Add" primary={true} onClick={this.addOrder}/>
+								<RaisedButton label="Add" secondary={true} onClick={this.addOrder}/>
 							</div>
 							<div style={{display:'inline-block', marginLeft:'16px'}}>
-								<FlatButton label="Clear" primary={true} onClick={this.clearForm}/>
+								<FlatButton label="Clear" secondary={true} onClick={this.clearForm}/>
 							</div>
 						</div>
 					</div>
@@ -324,10 +335,10 @@ var PackageOrder = React.createClass({
 						<div style={{position: 'relative'}} className="clearfix">
 							<div style={{position: 'absolute', top: '-32px', right: '-32px'}}>
 								{this.state.disableForm ?
-									<FloatingActionButton style={{marginRight: '16px'}} iconClassName="zmdi zmdi-edit" onClick={this.editOrder}></FloatingActionButton>
-									: <FloatingActionButton style={{marginRight: '16px'}} iconClassName="zmdi zmdi-check" onClick={this.updateOrder}></FloatingActionButton>
+									<FloatingActionButton style={{marginRight: '16px'}} iconClassName="zmdi zmdi-edit" onClick={this.editOrder} secondary={true}></FloatingActionButton>
+									: <FloatingActionButton style={{marginRight: '16px'}} iconClassName="zmdi zmdi-check" onClick={this.updateOrder} secondary={true}></FloatingActionButton>
 								}
-								<FloatingActionButton iconClassName="zmdi zmdi-delete" onClick={this.deleteOrder}></FloatingActionButton>
+								<FloatingActionButton iconClassName="zmdi zmdi-delete" onClick={this.deleteOrder} primary={true}></FloatingActionButton>
 							</div>
 							<div style={{display:'inline-block', width: '25%', float: 'left'}}>
 								<h2>Product</h2>
@@ -390,8 +401,8 @@ var PackageOrder = React.createClass({
 						<div style={{textAlign:'center'}}>
 							<div style={{display:'inline-block', marginRight:'16px'}}>
 								{this.state.disableForm ?
-									<RaisedButton label="Edit" primary={true} onClick={this.editOrder}/>
-									: <RaisedButton label="Update" primary={true} onClick={this.updateOrder}/>
+									<RaisedButton label="Edit" secondary={true} onClick={this.editOrder}/>
+									: <RaisedButton label="Update" secondary={true} onClick={this.updateOrder}/>
 								}
 							</div>
 							<div style={{display:'inline-block', marginLeft:'16px'}}>
@@ -416,11 +427,26 @@ var Customer_main = React.createClass({
 		};
 	},
 
+	componentWillMount: function() {
+		ThemeManager.setPalette({
+			primary1Color: "#1565C0",
+			accent1Color: "#E8524F",
+		});
+	},
+
 	getDefaultProps: function() {
 		return{
 			packageStyle: {
 				padding: '16px',
 				boxSizing: 'border-box'
+			},
+			carouselSettings: {
+				arrows: true,
+				dots: false,
+				infinite: true,
+				speed: 500,
+				slidesToShow: 3,
+				slidesToScroll: 1
 			}
 		};
 	},
@@ -433,7 +459,9 @@ var Customer_main = React.createClass({
 			packageOrderList: [],
 			packageOrderListJson: [],
 			requireImageIndex: [],
-			windowWidth: $(window).width()
+			windowWidth: $(window).width(),
+			dialogIndex: -1,
+			dialogImages: []
 		};
 	},
 
@@ -452,30 +480,49 @@ var Customer_main = React.createClass({
 			{
 				title: 'Asin Cenat Cenut',
 				price: '3.5',
-				description: 'Asin dan agak manis',
+				description: 'Lorem ipsum dolor sit amet, consul deterruisset id cum, mei an mucius accusata. Iisque omittam te mei. Eos te eirmod feugait disputando. Eam ei oratio accusam, ei sea zril perfecto. Ne dicat sapientem est, est id graece omittam, at eum summo falli assentior. In has graeco intellegam, eos tota inermis quaerendum an. Iuvaret constituto no mea. Sea an solum intellegat. Omnesque voluptaria theophrastus pro cu, te nec assum tempor minimum, ei cum quod facer labitur. Falli harum veritus has ut, eu natum signiferumque qui.',
 				imgUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
-				requireImage: true
+				images: [
+					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
+					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
+					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg'
+				],
+				requireImage: true,
+				quantity: 50
 			},
 			{
 				title: 'Poster Jolie',
 				price: '2.5',
-				description: 'Si ganteng',
+				description: 'Lorem ipsum dolor sit amet, consul deterruisset id cum, mei an mucius accusata. Iisque omittam te mei. Eos te eirmod feugait disputando. Eam ei oratio accusam, ei sea zril perfecto. Ne dicat sapientem est, est id graece omittam, at eum summo falli assentior. In has graeco intellegam, eos tota inermis quaerendum an. Iuvaret constituto no mea. Sea an solum intellegat. Omnesque voluptaria theophrastus pro cu, te nec assum tempor minimum, ei cum quod facer labitur. Falli harum veritus has ut, eu natum signiferumque qui.',
 				imgUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
-				requireImage: false
+				images: [
+					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
+					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
+					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg'
+				],
+				requireImage: false,
+				quantity: 50
 			},
 			{
 				title: 'Indomie Hampir Basi',
 				price: '3.5',
-				description: 'Dari toko terdekat',
+				description: 'Lorem ipsum dolor sit amet, consul deterruisset id cum, mei an mucius accusata. Iisque omittam te mei. Eos te eirmod feugait disputando. Eam ei oratio accusam, ei sea zril perfecto. Ne dicat sapientem est, est id graece omittam, at eum summo falli assentior. In has graeco intellegam, eos tota inermis quaerendum an. Iuvaret constituto no mea. Sea an solum intellegat. Omnesque voluptaria theophrastus pro cu, te nec assum tempor minimum, ei cum quod facer labitur. Falli harum veritus has ut, eu natum signiferumque qui.',
 				imgUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
-				requireImage: true
+				images: [
+					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
+					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
+					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg'
+				],
+				requireImage: true,
+				quantity: 50
 			}
 		];
 
 		for(var i = 0; i < packagesJson.length; i++)
 		{
 			packages.push(<div style={this.props.packageStyle}>
-				<Package imgUrl={packagesJson[i].imgUrl} title={packagesJson[i].title} price={packagesJson[i].price} description={packagesJson[i].description}/>
+				<Package imgUrl={packagesJson[i].imgUrl} title={packagesJson[i].title} price={packagesJson[i].price} quantity={packagesJson[i].quantity}
+				showDialog={this.showDialog} closeDialog={this.closeDialog} index={i}/>
 				</div>);
 
 			if(packagesJson[i].requireImage)
@@ -551,12 +598,55 @@ var Customer_main = React.createClass({
 		this.loadOrderList();
 	},
 
+	showDialog: function(index) {
+		var dialogImages = [];
+		for(var i = 0; i < this.state.packagesJson[index].images.length; i++){
+			dialogImages.push(
+				<div style={this.props.packageStyle}>
+				<img src={this.state.packagesJson[index].images[i]} style={{width: '100%'}}/>
+				</div>
+			);
+		}
+
+		this.setState({dialogIndex: index, dialogImages: dialogImages});
+		this.refs.dialog.show();
+	},
+
+	closeDialog: function() {
+		this.refs.dialog.dismiss();
+	},
+
 	render: function() {
 		return (
 			<div>
 				<AppBar title='PINTU Shop' showMenuIconButton={false} zDepth={1}/>
+				<Dialog ref="dialog"
+					modal={false}>
+					{this.state.dialogIndex > -1?
+						<div>
+							<div style={{width: '100%', textAlign: 'right'}}>
+								<IconButton iconClassName="zmdi zmdi-close" onClick={this.closeDialog}/>
+							</div>
+							<div>
+								<PackageImagesCarousel width={this.state.windowWidth} images={this.state.dialogImages} settings={this.props.carouselSettings}/>
+								<div className="clearfix" style={{display: 'block'}}>
+									<div style={{width: '70%', display:'inline-block'}}>
+										<h1>{this.state.packagesJson[this.state.dialogIndex].title}</h1>
+										<p>Quantity Left: {this.state.packagesJson[this.state.dialogIndex].quantity}</p>
+									</div>
+									<br/><br/>
+									<div style={{display: 'inline-block', marginTop: '16px', width: '20%'}}>
+										<h1 style={{fontColor: '#E53935'}}>{this.state.packagesJson[this.state.dialogIndex].price}</h1>
+									</div>
+								</div>
+								<p>{this.state.packagesJson[this.state.dialogIndex].description}</p>
+							</div>
+						</div>
+						: <div></div>
+					}
+				</Dialog>
 				<div style={{textAlign: 'center', width:'76.67%', margin: '90px auto 90px auto'}}>
-					<PackagesCarousel width={this.state.windowWidth} packages={this.state.packages}/>
+					<PackagesCarousel width={this.state.windowWidth} packages={this.state.packages} settings={this.props.carouselSettings}/>
 					<PackageForm packages={this.state.packageOptions} width={this.state.windowWidth} requireImageIndex={this.state.requireImageIndex}
 						onAddOrder={this.handleAddOrder}/>
 					{this.state.packageOrderList}
