@@ -147,6 +147,10 @@ body {
 		position: absolute;
 		top: 0;
 	}
+
+	.packageClass {
+		width: 100% !important;
+	}
 }
 
 .loginPaper__appLogo {
@@ -155,4 +159,8 @@ body {
 	border-radius: 50%;
 	background-color: #000;
 	margin: 0 auto;
+}
+
+.packageClass:first-child {
+	margin-left: 0;
 }
