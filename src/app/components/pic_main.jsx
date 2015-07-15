@@ -49,17 +49,17 @@ var CollectionTab = React.createClass({
 		// TODO call API to mark/unmark customer as paid
 	},
 	componentDidMount: function() {
-		$('.colTab__table').floatThead();
+		$('.table').floatThead();
 	},
 	render: function() {
 		var that = this;
 		var customerListRows = this.props.customerList.map(function(customer, index) {
 			return (
-				<tr key={customer.id} className="colTab__table__row">
-					<td className="colTab__table__data">{customer.name}</td>
-					<td className="colTab__table__data">&#36;{customer.total}</td>
-					<td className="colTab__table__data">{customer.phone}</td>
-					<td className="colTab__table__data colTab__table__data--checkbox">
+				<tr key={customer.id} className="table__row">
+					<td className="table__data">{customer.name}</td>
+					<td className="table__data">&#36;{customer.total}</td>
+					<td className="table__data">{customer.phone}</td>
+					<td className="table__data table__data--checkbox">
 						<Checkbox name={"customer-" + customer.id + "-paid"} value={customer.id.toString()} defaultChecked={customer.paid} onCheck={that.handleOnCheck} />
 					</td>
 				</tr>
@@ -67,19 +67,19 @@ var CollectionTab = React.createClass({
 		});
 		return(
 			<div className="tab colTab">
-				<table className="colTab__table">
-					<thead className="colTab__table__head" style={{background: ThemeManager.getCurrentTheme().palette.primary1Color}}>
-						<tr className="colTab__table__row colTab__table__row--head">
-							<th className="colTab__table__row__head">
+				<table className="table">
+					<thead className="table__head" style={{background: ThemeManager.getCurrentTheme().palette.primary1Color}}>
+						<tr className="table__row table__row--head">
+							<th className="table__row__head">
 								Sender Name
 							</th>
-							<th className="colTab__table__row__head">
+							<th className="table__row__head">
 								Total
 							</th>
-							<th className="colTab__table__row__head">
+							<th className="table__row__head">
 								Phone No.
 							</th>
-							<th className="colTab__table__row__head">
+							<th className="table__row__head">
 								Mark Paid
 							</th>
 						</tr>
@@ -119,11 +119,10 @@ var Main = React.createClass({
 				</AppBar>
 				<Tabs> 
 					<Tab label="Delivery" style={{textTransform: 'uppercase'}}> 
-						<CollectionTab customerList={customerList} />
+						<DeliveryTab />
 					</Tab> 
 					<Tab label="Collection" style={{textTransform: 'uppercase'}}> 
-						<DeliveryTab />
-						
+						<CollectionTab customerList={customerList} />
 					</Tab> 
 				</Tabs> 
 			</div>
