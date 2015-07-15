@@ -161,6 +161,77 @@ body {
 	margin: 0 auto;
 }
 
+<<<<<<< HEAD
 .packageClass:first-child {
 	margin-left: 0;
+=======
+/* ====================================
+ *	PIC Main
+ * ==================================== */
+
+.tab {
+	padding: 16px;
+}
+
+.colTab__table {
+	width: 100%;
+	border: solid 1px #E4E4E4;
+}
+
+.colTab__table__row {
+	text-align: center;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.colTab__table__head {
+	color: #fff;
+	font-weight: bold;
+}
+
+.colTab__table__row__head, .colTab__table__data {
+	padding: 16px 8px;
+	vertical-align: middle;
+	box-sizing: border-box;
+}
+
+.colTab__table__data--checkbox {
+	text-align: start;
+}
+
+.colTab__table__data--checkbox > div {
+	display: block !important;
+	width: 24px !important;
+	margin: 0 auto;
+}
+
+
+
+
+
+
+
+
+
+
+.adminSetting {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex; 
+
+  -webkit-flex-direction: column;
+  flex-direction: column;
+
+  height: 100vh;
+}
+
+.adminSetting__content {
+  position: relative;
+  
+  -webkit-flex-grow: 1;
+  -moz-flex-grow: 1;
+  flex-grow: 1;  
+>>>>>>> 448a8e461aae2998215ac5b5b5a74e35287e0bce
 }
