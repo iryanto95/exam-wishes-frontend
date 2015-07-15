@@ -161,10 +161,10 @@ body {
 	margin: 0 auto;
 }
 
-<<<<<<< HEAD
 .packageClass:first-child {
 	margin-left: 0;
-=======
+}
+
 /* ====================================
  *	PIC Main
  * ==================================== */
@@ -232,6 +232,9 @@ body {
   
   -webkit-flex-grow: 1;
   -moz-flex-grow: 1;
-  flex-grow: 1;  
->>>>>>> 448a8e461aae2998215ac5b5b5a74e35287e0bce
+  flex-grow: 1;
+}
+
+.slick-prev::before, .slick-next::before {
+	color: #1565C0;
 }
