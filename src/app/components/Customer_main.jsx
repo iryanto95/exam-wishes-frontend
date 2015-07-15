@@ -295,6 +295,14 @@ var PackageOrder = React.createClass({
 		this.props.onDeleteOrder(this.props.id);
 	},
 
+	openConfirmationDialog: function() {
+		this.refs.confirmationDialog.show();
+	},
+
+	closeConfirmationDialog: function() {
+		this.refs.confirmationDialog.dismiss();
+	},
+
 	editOrder: function() {
 		this.setState({disableForm: false});
 	},
@@ -314,6 +322,12 @@ var PackageOrder = React.createClass({
 		};
 	},
 
+	getDefaultProps: function() {
+		return {
+			noImg: 'https://dl.dropboxusercontent.com/u/105015583/blankimage.png'
+		};
+	},
+
 	render: function() {
 		var formStyle = {
 			display: 'block',
@@ -328,90 +342,109 @@ var PackageOrder = React.createClass({
 			fontSize: '150%'
 		};
 
+		var customActions = [
+			<FlatButton
+				label="No"
+				secondary={true}
+				onTouchTap={this.closeConfirmationDialog} />,
+			<FlatButton
+				label="Yes"
+				primary={true}
+				onTouchTap={this.deleteOrder} />
+		];
+
 		return(
-			<Paper zDepth={1} rounded={false} style={formStyle} className="clearfix">
-				{this.props.width > 1200 ?
-					<div>
-						<div style={{position: 'relative'}} className="clearfix">
-							<div style={{position: 'absolute', top: '-32px', right: '-32px'}}>
-								{this.state.disableForm ?
-									<FloatingActionButton style={{marginRight: '16px'}} iconClassName="zmdi zmdi-edit" onClick={this.editOrder} secondary={true}></FloatingActionButton>
-									: <FloatingActionButton style={{marginRight: '16px'}} iconClassName="zmdi zmdi-check" onClick={this.updateOrder} secondary={true}></FloatingActionButton>
-								}
-								<FloatingActionButton iconClassName="zmdi zmdi-delete" onClick={this.deleteOrder} primary={true}></FloatingActionButton>
-							</div>
-							<div style={{display:'inline-block', width: '25%', float: 'left'}}>
-								<h2>Product</h2>
-								<span style={formValueStyle}>{this.props.package}</span>
-							</div>
-							<div style={{display:'inline-block', width: '37.5%', float: 'left'}}>
-								<h2>From</h2>
-								<TextField id="sender" disabled={this.state.disableForm} defaultValue={this.props.sender} />
-							</div>
-							<div style={{display:'inline-block', width: '37.5%', float: 'left'}}>
-								<h2>To</h2>
-								<TextField id="recipient" disabled={this.state.disableForm} defaultValue={this.props.recipient} />
-							</div>
-						</div>
-						<div style={{display:'inline-block', width:'20%', marginRight:'5%', float: 'left'}}>
-						{this.props.image ? 
-							<div>
-								Image
-								<div style={{width: '100%', paddingBottom: '100%', height:'0', backgroundColor: '#cccccc', overflow:'hidden'}}>
-									<img src={this.props.image} style={{height: '100%'}}/>
+			<div>
+				<Dialog ref="confirmationDialog"
+					title="Delete Order"
+					actions={customActions}
+					modal={false} style={{textAlign: 'left'}}>
+					Are you sure you want to delete this order?
+				</Dialog>
+				<Paper zDepth={1} rounded={false} style={formStyle} className="clearfix">
+					{this.props.width > 1200 ?
+						<div>
+							<div style={{position: 'relative'}} className="clearfix">
+								<div style={{position: 'absolute', top: '-32px', right: '-32px'}}>
+									{this.state.disableForm ?
+										<FloatingActionButton style={{marginRight: '16px'}} iconClassName="zmdi zmdi-edit" onClick={this.editOrder} secondary={true}></FloatingActionButton>
+										: <FloatingActionButton style={{marginRight: '16px'}} iconClassName="zmdi zmdi-check" onClick={this.updateOrder} secondary={true}></FloatingActionButton>
+									}
+									<FloatingActionButton iconClassName="zmdi zmdi-delete" onClick={this.openConfirmationDialog} primary={true}></FloatingActionButton>
 								</div>
-								<br/><br/>
+								<div style={{display:'inline-block', width: '25%', float: 'left'}}>
+									<h2>Product</h2>
+									<span style={formValueStyle}>{this.props.package}</span>
+								</div>
+								<div style={{display:'inline-block', width: '37.5%', float: 'left'}}>
+									<h2>From</h2>
+									<TextField id="sender" disabled={this.state.disableForm} defaultValue={this.props.sender} />
+								</div>
+								<div style={{display:'inline-block', width: '37.5%', float: 'left'}}>
+									<h2>To</h2>
+									<TextField id="recipient" disabled={this.state.disableForm} defaultValue={this.props.recipient} />
+								</div>
 							</div>
-							: <div>&nbsp;</div>}
+							<div style={{display:'inline-block', width:'20%', marginRight:'5%', float: 'left'}}>
+							{this.props.image != this.props.noImg ? 
+								<div>
+									Image
+									<div style={{width: '100%', paddingBottom: '100%', height:'0', backgroundColor: '#cccccc', overflow:'hidden'}}>
+										<img src={this.props.image} style={{height: '100%'}}/>
+									</div>
+									<br/><br/>
+								</div>
+								: <div>&nbsp;</div>}
+							</div>
+							<div style={{display:'inline-block', width:'75%', float: 'left'}}>
+								<br/><br/>
+								<h2>Address</h2>
+								<TextField id="address" disabled={this.state.disableForm} defaultValue={this.props.address} multiLine={true}/>
+								<br/><br/><br/>
+								<h2>Message</h2>
+								<TextField id="message" disabled={this.state.disableForm} defaultValue={this.props.message} multiLine={true}/>
+							</div>
 						</div>
-						<div style={{display:'inline-block', width:'75%', float: 'left'}}>
+						: <div>
+							<h2>Product</h2>
+							<span style={formValueStyle}>{this.props.package}</span>
+							<br/><br/>
+							<h2>From</h2>
+							<TextField id="recipient" disabled={this.state.disableForm} defaultValue={this.props.sender} />
+							<br/><br/>
+							<h2>To</h2>
+							<TextField id="recipient" disabled={this.state.disableForm} defaultValue={this.props.recipient} />
 							<br/><br/>
 							<h2>Address</h2>
 							<TextField id="address" disabled={this.state.disableForm} defaultValue={this.props.address} multiLine={true}/>
-							<br/><br/><br/>
+							<br/><br/>
 							<h2>Message</h2>
 							<TextField id="message" disabled={this.state.disableForm} defaultValue={this.props.message} multiLine={true}/>
-						</div>
-					</div>
-					: <div>
-						<h2>Product</h2>
-						<span style={formValueStyle}>{this.props.package}</span>
-						<br/><br/>
-						<h2>From</h2>
-						<TextField id="recipient" disabled={this.state.disableForm} defaultValue={this.props.sender} />
-						<br/><br/>
-						<h2>To</h2>
-						<TextField id="recipient" disabled={this.state.disableForm} defaultValue={this.props.recipient} />
-						<br/><br/>
-						<h2>Address</h2>
-						<TextField id="address" disabled={this.state.disableForm} defaultValue={this.props.address} multiLine={true}/>
-						<br/><br/>
-						<h2>Message</h2>
-						<TextField id="message" disabled={this.state.disableForm} defaultValue={this.props.message} multiLine={true}/>
-						<br/><br/>
-						{this.props.image ? 
-							<div>
-								Image
-								<div style={{width: '100%', paddingBottom: '100%', height:'0', backgroundColor: '#cccccc', overflow:'hidden'}}>
-									<img src={this.props.image} style={{width: '100%'}}/>
+							<br/><br/>
+							{this.props.image != this.props.noImg  ? 
+								<div>
+									Image
+									<div style={{width: '100%', paddingBottom: '100%', height:'0', backgroundColor: '#cccccc', overflow:'hidden'}}>
+										<img src={this.props.image} style={{width: '100%'}}/>
+									</div>
+									<br/><br/>
 								</div>
-								<br/><br/>
-							</div>
-							: <div>&nbsp;</div>}
-						<div style={{textAlign:'center'}}>
-							<div style={{display:'inline-block', marginRight:'16px'}}>
-								{this.state.disableForm ?
-									<RaisedButton label="Edit" secondary={true} onClick={this.editOrder}/>
-									: <RaisedButton label="Update" secondary={true} onClick={this.updateOrder}/>
-								}
-							</div>
-							<div style={{display:'inline-block', marginLeft:'16px'}}>
-								<RaisedButton label="Delete" primary={true} onClick={this.deleteOrder}/>
+								: <div>&nbsp;</div>}
+							<div style={{textAlign:'center'}}>
+								<div style={{display:'inline-block', marginRight:'16px'}}>
+									{this.state.disableForm ?
+										<RaisedButton label="Edit" secondary={true} onClick={this.editOrder}/>
+										: <RaisedButton label="Update" secondary={true} onClick={this.updateOrder}/>
+									}
+								</div>
+								<div style={{display:'inline-block', marginLeft:'16px'}}>
+									<RaisedButton label="Delete" primary={true} onClick={this.openConfirmationDialog}/>
+								</div>
 							</div>
 						</div>
-					</div>
-				}
-			</Paper>
+					}
+				</Paper>
+			</div>
 		);
 	}
 });
