@@ -44,7 +44,7 @@ var Package = React.createClass({
 		return(
 			<div>
 				<Paper className="packageClass" zDepth={1} rounded={false} onTouchTap={this.showDialog}>
-					<img style={imgStyle} draggable="false" src={this.props.imgUrl}/>
+					<img style={imgStyle} draggable="false" src={this.props.primaryImage}/>
 					<div style={packageContentStyle}>
 						<div style={{width: '70%', display:'inline-block'}}>
 							<h1>{this.props.title}</h1>
@@ -64,7 +64,7 @@ var PackagesCarousel = React.createClass({
 	render: function () {
 		return (
 			<div>
-				{this.props.width > 800 ?
+				{this.props.width > 1000 ?
 					<div>
 						{this.props.packages ?
 						<Slider {...this.props.settings}>
@@ -166,7 +166,7 @@ var PackageForm = React.createClass({
 	},
 
 	addOrder: function() {
-		var product = this.state.selectedPackage + 1;
+		var product = this.state.selectedPackage;
 		var sender = $('#senderName').val();
 		var recipient = $('#recipientName').val();
 		var address = $('#recipientAddress').val();
@@ -498,7 +498,8 @@ var Customer_main = React.createClass({
 			requireImageIndex: [],
 			windowWidth: $(window).width(),
 			dialogIndex: -1,
-			dialogImages: []
+			dialogImages: [],
+			totalPrice: 0
 		};
 	},
 
@@ -518,7 +519,7 @@ var Customer_main = React.createClass({
 				title: 'Asin Cenat Cenut',
 				price: '3.5',
 				description: 'Lorem ipsum dolor sit amet, consul deterruisset id cum, mei an mucius accusata. Iisque omittam te mei. Eos te eirmod feugait disputando. Eam ei oratio accusam, ei sea zril perfecto. Ne dicat sapientem est, est id graece omittam, at eum summo falli assentior. In has graeco intellegam, eos tota inermis quaerendum an. Iuvaret constituto no mea. Sea an solum intellegat. Omnesque voluptaria theophrastus pro cu, te nec assum tempor minimum, ei cum quod facer labitur. Falli harum veritus has ut, eu natum signiferumque qui.',
-				imgUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
+				primaryImage: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
 				images: [
 					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
 					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
@@ -531,7 +532,7 @@ var Customer_main = React.createClass({
 				title: 'Poster Jolie',
 				price: '2.5',
 				description: 'Lorem ipsum dolor sit amet, consul deterruisset id cum, mei an mucius accusata. Iisque omittam te mei. Eos te eirmod feugait disputando. Eam ei oratio accusam, ei sea zril perfecto. Ne dicat sapientem est, est id graece omittam, at eum summo falli assentior. In has graeco intellegam, eos tota inermis quaerendum an. Iuvaret constituto no mea. Sea an solum intellegat. Omnesque voluptaria theophrastus pro cu, te nec assum tempor minimum, ei cum quod facer labitur. Falli harum veritus has ut, eu natum signiferumque qui.',
-				imgUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
+				primaryImage: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
 				images: [
 					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
 					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
@@ -544,7 +545,7 @@ var Customer_main = React.createClass({
 				title: 'Indomie Hampir Basi',
 				price: '3.5',
 				description: 'Lorem ipsum dolor sit amet, consul deterruisset id cum, mei an mucius accusata. Iisque omittam te mei. Eos te eirmod feugait disputando. Eam ei oratio accusam, ei sea zril perfecto. Ne dicat sapientem est, est id graece omittam, at eum summo falli assentior. In has graeco intellegam, eos tota inermis quaerendum an. Iuvaret constituto no mea. Sea an solum intellegat. Omnesque voluptaria theophrastus pro cu, te nec assum tempor minimum, ei cum quod facer labitur. Falli harum veritus has ut, eu natum signiferumque qui.',
-				imgUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
+				primaryImage: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
 				images: [
 					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
 					'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/093/237/0024897.jpg',
@@ -557,10 +558,12 @@ var Customer_main = React.createClass({
 
 		for(var i = 0; i < packagesJson.length; i++)
 		{
-			packages.push(<div style={this.props.packageStyle}>
-				<Package imgUrl={packagesJson[i].imgUrl} title={packagesJson[i].title} price={packagesJson[i].price} quantity={packagesJson[i].quantity}
+			packages.push(
+				<div style={this.props.packageStyle}>
+				<Package primaryImage={packagesJson[i].primaryImage} title={packagesJson[i].title} price={packagesJson[i].price} quantity={packagesJson[i].quantity}
 				showDialog={this.showDialog} closeDialog={this.closeDialog} index={i}/>
-				</div>);
+				</div>
+			);
 
 			if(packagesJson[i].requireImage)
 				requireImageIndex.push(i);
@@ -602,7 +605,7 @@ var Customer_main = React.createClass({
 	handleAddOrder: function(product,sender,recipient,address,message,image) {
 		var packageOrderListJson = this.state.packageOrderListJson;
 		packageOrderListJson.unshift({image: image, package: product, sender: sender, recipient: recipient, address: address, message: message, id: packageOrderListJson.length});
-		this.setState({packageOrderListJson: packageOrderListJson});
+		this.setState({packageOrderListJson: packageOrderListJson, totalPrice: Number(this.state.totalPrice) + Number(this.state.packagesJson[product].price)});
 		this.loadOrderList();
 	},
 
@@ -656,38 +659,45 @@ var Customer_main = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<AppBar title='PINTU Shop' showMenuIconButton={false} zDepth={1}/>
-				<Dialog ref="dialog"
-					modal={false}>
-					{this.state.dialogIndex > -1?
+				<AppBar title='PINTU Shop' showMenuIconButton={false} zDepth={1}/>			
+				{this.state.dialogIndex > -1 && this.state.windowWidth > 1000 ?
+					<Dialog ref="dialog" modal={false}>
 						<div>
 							<div style={{width: '100%', textAlign: 'right'}}>
 								<IconButton iconClassName="zmdi zmdi-close" onClick={this.closeDialog}/>
 							</div>
 							<div style={{padding: '24px'}}>
 								<PackageImagesCarousel width={this.state.windowWidth} images={this.state.dialogImages} settings={this.props.carouselSettings}/>
-								<div className="clearfix" style={{display: 'block'}}>
-									<div style={{width: '70%', display:'inline-block'}}>
-										<h1>{this.state.packagesJson[this.state.dialogIndex].title}</h1>
-										<p>Quantity Left: {this.state.packagesJson[this.state.dialogIndex].quantity}</p>
+								<div style={{marginLeft: '16px', marginRight:'16px'}}>
+									<div className="clearfix" style={{display: 'block'}}>
+										<div style={{width: '70%', display:'inline-block'}}>
+											<h1>{this.state.packagesJson[this.state.dialogIndex].title}</h1>
+											<p>Quantity Left: {this.state.packagesJson[this.state.dialogIndex].quantity}</p>
+										</div>
+										<div style={{display: 'inline-block', marginTop: '16px', width: '20%', textAlign: 'right'}}>
+											<h1 style={{fontColor: '#E53935'}}>{this.state.packagesJson[this.state.dialogIndex].price}</h1>
+										</div>
 									</div>
-									<div style={{display: 'inline-block', marginTop: '16px', width: '20%', textAlign: 'right'}}>
-										<h1 style={{fontColor: '#E53935'}}>{this.state.packagesJson[this.state.dialogIndex].price}</h1>
-									</div>
+									<br/><br/>
+									<p>{this.state.packagesJson[this.state.dialogIndex].description}</p>
 								</div>
-								<br/><br/>
-								<p>{this.state.packagesJson[this.state.dialogIndex].description}</p>
 							</div>
 						</div>
-						: <div></div>
-					}
-				</Dialog>
+					</Dialog>
+					: <div></div>
+				}
 				<div style={{textAlign: 'center', width:'76.67%', margin: '90px auto 90px auto'}}>
 					<PackagesCarousel width={this.state.windowWidth} packages={this.state.packages} settings={this.props.carouselSettings}/>
 					<PackageForm packages={this.state.packageOptions} width={this.state.windowWidth} requireImageIndex={this.state.requireImageIndex}
 						onAddOrder={this.handleAddOrder}/>
 					{this.state.packageOrderList}
 				</div>
+				{ this.state.windowWidth <= 1000 ?
+					<div style={{backgroundColor: '#1565C0', color: '#ffffff', padding: '16px 0 16px 0', textAlign:'center'}}>
+						Total: ${this.state.totalPrice}
+					</div>
+					: <div></div>
+				}
 			</div>
 		);
 	},
