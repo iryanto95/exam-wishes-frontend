@@ -43,7 +43,7 @@ var Package = React.createClass({
 
 		return(
 			<div>
-				<Paper className="packageClass" zDepth={1} rounded={false} onClick={this.showDialog}>
+				<Paper className="packageClass" zDepth={1} rounded={false} onTouchTap={this.showDialog}>
 					<img style={imgStyle} draggable="false" src={this.props.imgUrl}/>
 					<div style={packageContentStyle}>
 						<div style={{width: '70%', display:'inline-block'}}>
@@ -190,7 +190,9 @@ var PackageForm = React.createClass({
 			marginTop: '48px',
 			padding: '60px',
 			textAlign: 'left',
-			overflow:'hidden'
+			overflow:'hidden',
+			marginLeft: '16px',
+			marginRight: '16px'
 		};
 
 		return(
@@ -333,7 +335,9 @@ var PackageOrder = React.createClass({
 			display: 'block',
 			marginTop: '48px',
 			padding: '60px',
-			textAlign: 'left'
+			textAlign: 'left',
+			marginLeft: '16px',
+			marginRight: '16px'
 		};
 
 		var formValueStyle = {
@@ -660,18 +664,18 @@ var Customer_main = React.createClass({
 							<div style={{width: '100%', textAlign: 'right'}}>
 								<IconButton iconClassName="zmdi zmdi-close" onClick={this.closeDialog}/>
 							</div>
-							<div>
+							<div style={{padding: '24px'}}>
 								<PackageImagesCarousel width={this.state.windowWidth} images={this.state.dialogImages} settings={this.props.carouselSettings}/>
 								<div className="clearfix" style={{display: 'block'}}>
 									<div style={{width: '70%', display:'inline-block'}}>
 										<h1>{this.state.packagesJson[this.state.dialogIndex].title}</h1>
 										<p>Quantity Left: {this.state.packagesJson[this.state.dialogIndex].quantity}</p>
 									</div>
-									<br/><br/>
-									<div style={{display: 'inline-block', marginTop: '16px', width: '20%'}}>
+									<div style={{display: 'inline-block', marginTop: '16px', width: '20%', textAlign: 'right'}}>
 										<h1 style={{fontColor: '#E53935'}}>{this.state.packagesJson[this.state.dialogIndex].price}</h1>
 									</div>
 								</div>
+								<br/><br/>
 								<p>{this.state.packagesJson[this.state.dialogIndex].description}</p>
 							</div>
 						</div>
