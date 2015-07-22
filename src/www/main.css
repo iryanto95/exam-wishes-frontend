@@ -54,6 +54,11 @@ table {
    clear: both;
 }
 
+.shopmenu-item:hover {
+  background-color: #e1f5fe !important;
+  cursor: pointer;
+}
+
 /* ====================================
  *	Additional Reset
  * ==================================== */
@@ -176,4 +181,27 @@ body {
   -webkit-flex-grow: 1;
   -moz-flex-grow: 1;
   flex-grow: 1;  
+}
+
+
+@media print {
+    .body{
+      font-size: 10px !important;
+    }
+    .print-button-hidden{
+      position: absolute;
+      left: -999999px;
+    }
+    .paper-table{
+      padding: 0px !important;
+    }
+    .div-paper{
+      position: absolute !important;
+      margin: 0px !important;
+      width: 100% !important;
+    }
+    .div-navbar{
+      margin: 0px !important;
+      display: none;
+    }
 }
