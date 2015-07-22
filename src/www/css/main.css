@@ -205,6 +205,100 @@ body {
 	margin: 0 auto;
 }
 
+/* Overwrite paper collapse styling */
+.tab .collapse-card.active {
+	margin: 0;
+}
+.tab .collapse-card.active .collapse-card__heading:hover::after{
+	content:""
+}
+.tab .collapse-card .collapse-card__heading:hover::after{
+	content:""
+}
+.tab .collapse-card {
+	border: none;
+}
+.tab .collapse-card__heading, .tab .collapse-card__body {
+	padding: 24px;
+}
+.tab .collapse-card__title {
+	margin: 0;
+}
+
+/* Paper collapse own styling */
+.collapse-card, .tab .collapse-card.active {
+	margin-bottom: 16px;
+}
+
+.collapse-card:last-child {
+	margin: 0;
+}
+
+.collapse-card__title {
+	color: #fff;
+	margin: 0;
+	display: flex;
+	flex-flow: space-between;
+}
+
+.collapse-card__title__left {
+	flex-grow: 1;
+}
+
+.collapse-card__title__left .recipient-name {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.collapse-card__title__left .recipient-addr {
+	font-style: italic;
+	font-weight: 100;
+}
+
+.collapse-card__title__right {
+	width: 64px;
+	height: 64px;
+	text-align: center;
+	background: rgba(255,255,255,0.5);
+	border-radius: 50%;
+}
+
+.collapse-card__title__right .order-total {
+	line-height: 64px;
+	font-size: 24px;
+}
+
+.collapse-card__body {
+	text-align: center;
+}
+
+.order-list {
+	font-size: 16px;
+	line-height: 32px;
+	color: #000;
+	text-align: left;
+	margin: 0 0 16px 0;
+}
+
+.order-list__item:nth-child(even) {
+	background: #EAEAEA;
+}
+
+.order-list__item {
+	display: flex;
+	/*height: 32px;*/
+	padding: 0 32px;
+}
+
+.list__item__name {
+	flex-grow: 1;
+
+}
+
+/* ====================================
+ *	Admin Setting
+ * ==================================== */
+
 .adminSetting {
   display: -webkit-box;
   display: -moz-box;
