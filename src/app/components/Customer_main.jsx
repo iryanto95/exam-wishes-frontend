@@ -266,6 +266,7 @@ var PackageForm = React.createClass({
 							:<div></div>
 						}
 						<div style={{textAlign:'center'}}>
+							<br/><br/>
 							<div style={{display:'inline-block', marginRight:'16px'}}>
 								<RaisedButton label="Add" secondary={true} onClick={this.addOrder}/>
 							</div>
@@ -413,19 +414,19 @@ var PackageOrder = React.createClass({
 							</div>
 						</div>
 					</Paper>
-					: <div>
-						<div ref="collapseCard" className="collapse-card">
+					: <div style={{textAlign: 'left'}}>
+						<div ref="collapseCard" style={formStyle} className="collapse-card">
 							<div className="collapse-card__heading">
 								<div className="collapse-card__title">
 									<div className="collapse-card__title__left" style={{color: '#000000'}}>
 										<h2 className="recipient-name">To: {this.props.recipient}</h2>
 									</div>
 									<div className="collapse-card__title__right">
-										<IconButton iconClassName="zmdi zmdi-close"/>
+										<IconButton iconClassName="zmdi zmdi-chevron-down"/>
 									</div>
 								</div>
 							</div>
-							<div className="collapse-card__body">
+							<div className="collapse-card__body" style={{textAlign: 'left'}}>
 								<h2>Product</h2>
 								<span style={formValueStyle}>{this.props.package}</span>
 								<br/><br/>
@@ -703,7 +704,7 @@ var Customer_main = React.createClass({
 					</Dialog>
 					: <div></div>
 				}
-				<div style={{textAlign: 'center', width:'76.67%', margin: '90px auto 90px auto'}}>
+				<div style={{width:'76.67%', margin: '90px auto 90px auto'}}>
 					<PackagesCarousel width={this.state.windowWidth} packages={this.state.packages} settings={this.props.carouselSettings}/>
 					<PackageForm packages={this.state.packageOptions} width={this.state.windowWidth} requireImageIndex={this.state.requireImageIndex}
 						onAddOrder={this.handleAddOrder}/>
