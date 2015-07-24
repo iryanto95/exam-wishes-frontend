@@ -158,30 +158,30 @@ var PackageForm = React.createClass({
 
 	updateSavedValues: function() {
 		this.setState({
-			from: $('#senderName').val(),
-			to: $('#recipientName').val(),
-			address: $('#recipientAddress').val(),
-			message: $('#message').val()
+			from: this.refs.from.getValue(),
+			to: this.refs.to.getValue(),
+			address: this.refs.address.getValue(),
+			message: this.refs.message.getValue()
 		})
 	},
 
 	addOrder: function() {
 		var product = this.state.selectedPackage;
-		var sender = $('#senderName').val();
-		var recipient = $('#recipientName').val();
-		var address = $('#recipientAddress').val();
-		var message = $('#message').val();
+		var sender = this.refs.from.getValue();
+		var recipient = this.refs.to.getValue();
+		var address = this.refs.address.getValue();
+		var message = this.refs.message.getValue();
 		this.props.onAddOrder(product,sender,recipient,address,message,this.state.image_uri);
 		this.clearForm();
 	},
 
 	clearForm: function() {
-		$('#senderName').val("");
-		$('#recipientName').val("");
-		$('#recipientAddress').val("");
-		$('#message').val("");
+		this.refs.from.clearValue();
+		this.refs.to.clearValue();
+		this.refs.address.clearValue();
+		this.refs.message.clearValue();
 		$('#imageButton').val("");
-		this.setState({image_uri: 'https://dl.dropboxusercontent.com/u/105015583/blankimage.png'});
+		this.setState({selectedPackage: 0, image_uri: 'https://dl.dropboxusercontent.com/u/105015583/blankimage.png'});
 	},
 
 	render: function() {
@@ -206,11 +206,11 @@ var PackageForm = React.createClass({
 							</div>
 							<div style={{display:'inline-block', width: '37.5%', float: 'left'}}>
 								<h2>From</h2>
-								<TextField ref="from" id="senderName" hintText="Sender's Name" style={{width: '95%'}} onChange={this.updateSavedValues}/>
+								<TextField ref="from" hintText="Sender's Name" style={{width: '95%'}} onChange={this.updateSavedValues}/>
 							</div>
 							<div style={{display:'inline-block', width: '37.5%', float: 'left'}}>
 								<h2>To</h2>
-								<TextField ref="to" id="recipientName" hintText="Recipient's Name" style={{width: '95%'}} onChange={this.updateSavedValues}/>
+								<TextField ref="to" hintText="Recipient's Name" style={{width: '95%'}} onChange={this.updateSavedValues}/>
 							</div>
 						</div>
 						<div style={{display:'inline-block', width:'20%', marginRight:'5%', float: 'left'}}>
@@ -218,20 +218,18 @@ var PackageForm = React.createClass({
 							<div>
 								<br/><br/>
 								Image
-									<input type="file" id="imageButton" onChange={this.readImg}/>
-								<div style={{width: '100%', paddingBottom: '100%', height:'0', backgroundColor: '#cccccc', overflow:'hidden'}}>
-									<img id="image" src={this.state.image_uri} style={{height: '100%'}}/>
-								</div>
+								<input type="file" id="imageButton" onChange={this.readImg}/>
+								<img src={this.state.image_uri} style={{width: '100%', height: '100%'}}/>
 							</div>
 							: <div>&nbsp;</div>}
 						</div>
 						<div style={{display:'inline-block', width:'75%', float: 'left'}}>
 							<br/><br/>
 							<h2>Address</h2>
-							<TextField ref="address" id="recipientAddress" hintText="Recipient's Address" multiLine={true} style={{width: '97%'}} onChange={this.updateSavedValues}/>
+							<TextField ref="address" hintText="Recipient's Address" multiLine={true} style={{width: '97%'}} onChange={this.updateSavedValues}/>
 							<br/><br/><br/>
 							<h2>Message</h2>
-							<TextField ref="message" id="message" hintText="Message" multiLine={true} style={{width: '97%'}} onChange={this.updateSavedValues}/>
+							<TextField ref="message" hintText="Message" multiLine={true} style={{width: '97%'}} onChange={this.updateSavedValues}/>
 							<br/><br/><br/><br/><br/>
 						</div>
 						<div style={{textAlign:'center'}}>
@@ -248,22 +246,22 @@ var PackageForm = React.createClass({
 						<DropDownMenu id="package" selectedIndex={this.state.selectedPackage} menuItems={this.props.packages} autoWidth={false} style={{width: '100%'}} onChange={this.checkRequireImage}/>
 						<br/><br/>
 						<h2>From</h2>
-						<TextField ref="from" id="senderName" hintText="Sender's Name" style={{width: '100%'}} onChange={this.updateSavedValues}/>
+						<TextField ref="from" hintText="Sender's Name" style={{width: '100%'}} onChange={this.updateSavedValues}/>
 						<br/><br/>
 						<h2>To</h2>
-						<TextField ref="to" id="recipientName" hintText="Recipient's Name" style={{width: '100%'}} onChange={this.updateSavedValues}/>
+						<TextField ref="to" hintText="Recipient's Name" style={{width: '100%'}} onChange={this.updateSavedValues}/>
 						<br/><br/>
 						<h2>Address</h2>
-						<TextField ref="address" id="recipientAddress" hintText="Recipient's Address" multiLine={true} style={{width: '100%'}} onChange={this.updateSavedValues}/>
+						<TextField ref="address" hintText="Recipient's Address" multiLine={true} style={{width: '100%'}} onChange={this.updateSavedValues}/>
 						<br/><br/>
 						<h2>Message</h2>
-						<TextField ref="message" id="message" hintText="Message" multiLine={true} style={{width: '100%'}} onChange={this.updateSavedValues}/>
+						<TextField ref="message" hintText="Message" multiLine={true} style={{width: '100%'}} onChange={this.updateSavedValues}/>
 						<br/><br/>
 						{this.state.requireImage || (this.props.requireImageIndex.indexOf(0) > -1 && this.state.selectedPackage === 0) ?
 							<div>
-								Image<br/>
+								Image
 								<input type="file" id="imageButton" onChange={this.readImg}/>
-								<img src={this.state.image_uri} style={{width: '100%'}}/><br/><br/>
+								<img src={this.state.image_uri} style={{width: '100%', height: '100%'}}/>
 							</div>
 							:<div></div>
 						}
@@ -294,6 +292,8 @@ var PackageOrder = React.createClass({
 	},
 
 	deleteOrder: function() {
+		$('body').css("overflow","scroll");
+		this.refs.confirmationDialog.dismiss();
 		this.props.onDeleteOrder(this.props.id);
 	},
 
@@ -311,10 +311,10 @@ var PackageOrder = React.createClass({
 
 	updateOrder: function() {
 		this.setState({disableForm: true});
-		var sender = $('#sender').val();
-		var recipient = $('#recipient').val();
-		var address = $('#address').val();
-		var message = $('#message').val();
+		var sender = this.refs.from.getValue();
+		var recipient = this.refs.to.getValue();
+		var address = this.refs.address.getValue();
+		var message = this.refs.message.getValue();
 		this.props.onUpdateOrder(this.props.id,sender,recipient,address,message);
 	},
 
@@ -328,6 +328,10 @@ var PackageOrder = React.createClass({
 		return {
 			noImg: 'https://dl.dropboxusercontent.com/u/105015583/blankimage.png'
 		};
+	},
+
+	componentDidMount: function() {
+		this.refs.from.setValue(this.props.sender);
 	},
 
 	render: function() {
@@ -382,20 +386,18 @@ var PackageOrder = React.createClass({
 								</div>
 								<div style={{display:'inline-block', width: '37.5%', float: 'left'}}>
 									<h2>From</h2>
-									<TextField id="sender" disabled={this.state.disableForm} defaultValue={this.props.sender} />
+									<TextField ref="from" disabled={this.state.disableForm} defaultValue={this.props.sender}/>
 								</div>
 								<div style={{display:'inline-block', width: '37.5%', float: 'left'}}>
 									<h2>To</h2>
-									<TextField id="recipient" disabled={this.state.disableForm} defaultValue={this.props.recipient} />
+									<TextField ref="to" disabled={this.state.disableForm} defaultValue={this.props.recipient} />
 								</div>
 							</div>
 							<div style={{display:'inline-block', width:'20%', marginRight:'5%', float: 'left'}}>
 							{this.props.image != this.props.noImg ? 
 								<div>
 									Image
-									<div style={{width: '100%', paddingBottom: '100%', height:'0', backgroundColor: '#cccccc', overflow:'hidden'}}>
-										<img src={this.props.image} style={{height: '100%'}}/>
-									</div>
+									<img src={this.props.image} style={{width: '100%', height: '100%'}}/>
 									<br/><br/>
 								</div>
 								: <div>&nbsp;</div>}
@@ -403,10 +405,10 @@ var PackageOrder = React.createClass({
 							<div style={{display:'inline-block', width:'75%', float: 'left'}}>
 								<br/><br/>
 								<h2>Address</h2>
-								<TextField id="address" disabled={this.state.disableForm} defaultValue={this.props.address} multiLine={true}/>
+								<TextField ref="address" disabled={this.state.disableForm} defaultValue={this.props.address} multiLine={true}/>
 								<br/><br/><br/>
 								<h2>Message</h2>
-								<TextField id="message" disabled={this.state.disableForm} defaultValue={this.props.message} multiLine={true}/>
+								<TextField ref="message" disabled={this.state.disableForm} defaultValue={this.props.message} multiLine={true}/>
 							</div>
 						</div>
 						: <div>
@@ -414,23 +416,21 @@ var PackageOrder = React.createClass({
 							<span style={formValueStyle}>{this.props.package}</span>
 							<br/><br/>
 							<h2>From</h2>
-							<TextField id="recipient" disabled={this.state.disableForm} defaultValue={this.props.sender} />
+							<TextField ref="from" disabled={this.state.disableForm} defaultValue={this.props.sender} />
 							<br/><br/>
 							<h2>To</h2>
-							<TextField id="recipient" disabled={this.state.disableForm} defaultValue={this.props.recipient} />
+							<TextField ref="to" disabled={this.state.disableForm} defaultValue={this.props.recipient} />
 							<br/><br/>
 							<h2>Address</h2>
-							<TextField id="address" disabled={this.state.disableForm} defaultValue={this.props.address} multiLine={true}/>
+							<TextField ref="address" disabled={this.state.disableForm} defaultValue={this.props.address} multiLine={true}/>
 							<br/><br/>
 							<h2>Message</h2>
-							<TextField id="message" disabled={this.state.disableForm} defaultValue={this.props.message} multiLine={true}/>
+							<TextField ref="message" disabled={this.state.disableForm} defaultValue={this.props.message} multiLine={true}/>
 							<br/><br/>
 							{this.props.image != this.props.noImg  ? 
 								<div>
 									Image
-									<div style={{width: '100%', paddingBottom: '100%', height:'0', backgroundColor: '#cccccc', overflow:'hidden'}}>
-										<img src={this.props.image} style={{width: '100%'}}/>
-									</div>
+									<img src={this.props.image} style={{width: '100%'}}/>
 									<br/><br/>
 								</div>
 								: <div>&nbsp;</div>}
@@ -581,13 +581,15 @@ var Customer_main = React.createClass({
 		var packageOptions = this.state.packageOptions;
 		for(var i = 0; i < packageOrderListJson.length; i++){
 			for(var j = 0; j < packageOptions.length; j++){
-				if(packageOptions[j].payload == packageOrderListJson[i].package)
+				if(packageOptions[j].payload == packageOrderListJson[i].package + 1)
 					package = packageOptions[j].text;
 			}
-			packageOrderList.push(<PackageOrder width={this.state.windowWidth} package={package} sender={packageOrderListJson[i].sender}
+			packageOrderList.push(
+				<PackageOrder width={this.state.windowWidth} package={package} sender={packageOrderListJson[i].sender}
 				recipient={packageOrderListJson[i].recipient} image={packageOrderListJson[i].image} address={packageOrderListJson[i].address}
 				message={packageOrderListJson[i].message} id={packageOrderListJson[i].id} onDeleteOrder={this.deleteOrder}
-				onUpdateOrder={this.updateOrder}/>);
+				onUpdateOrder={this.updateOrder}/>
+				);
 		}
 		this.setState({packageOrderList: packageOrderList});
 	},
@@ -604,7 +606,7 @@ var Customer_main = React.createClass({
 
 	handleAddOrder: function(product,sender,recipient,address,message,image) {
 		var packageOrderListJson = this.state.packageOrderListJson;
-		packageOrderListJson.unshift({image: image, package: product, sender: sender, recipient: recipient, address: address, message: message, id: packageOrderListJson.length});
+		packageOrderListJson.push({image: image, package: product, sender: sender, recipient: recipient, address: address, message: message, id: packageOrderListJson.length});
 		this.setState({packageOrderListJson: packageOrderListJson, totalPrice: Number(this.state.totalPrice) + Number(this.state.packagesJson[product].price)});
 		this.loadOrderList();
 	},

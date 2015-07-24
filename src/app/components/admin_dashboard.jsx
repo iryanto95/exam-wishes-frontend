@@ -2,12 +2,72 @@
 
 var React = require('react');
 var mui = require('material-ui');
-var AppBar = require('material-ui/lib/app-bar')
-var LeftNav = require('material-ui/lib/left-nav')
-var Menu = require('material-ui/lib/menu/menu')
+var AppBar =  mui.AppBar
+var LeftNav = mui.LeftNav
+var Menu = mui.Menu
+var MenuItem = mui.MenuItem
 var RaisedButton = mui.RaisedButton;
+var Paper = mui.Paper
 var ThemeManager = new mui.Styles.ThemeManager();
 var Colors = mui.Styles.Colors;
+
+var ShopMenuItem = React.createClass({
+  childContextTypes: {
+    muiTheme: React.PropTypes.object
+  },
+
+  getChildContext: function() {
+    return {
+      muiTheme: ThemeManager.getCurrentTheme()
+    };
+  },
+
+  render: function() {
+
+    return (
+      <div style={this.props.style}>
+        <Paper zDepth={3} className="clearfix shopmenu-item" style={{paddingLeft:'32px', paddingRight:'32px', paddingTop:'32px', paddingBottom:'32px'}} >
+          <div style={{float:'left'}}>
+            <p style={{fontSize:'300%', marginTop:'8px'}}>{this.props.shopname} Shop</p>
+            <p style={{fontSize:'200%', marginTop:'32px'}}>Status: {this.props.status}</p>
+          </div>
+          <div style={{float:'right', textAlign:'right'}}>
+            <p style={{fontSize:'150%'}}>{this.props.order} orders </p>
+            <p style={{fontSize:'150%', marginTop:'16px'}}>{this.props.product} products </p>
+            <p style={{fontSize:'150%', marginTop:'16px'}}>{this.props.pic} PICs </p>
+          </div>
+        </Paper>
+      </div>
+    );
+  },
+})
+
+var ShopMenu = React.createClass({
+  childContextTypes: {
+    muiTheme: React.PropTypes.object
+  },
+
+  getChildContext: function() {
+    return {
+      muiTheme: ThemeManager.getCurrentTheme()
+    };
+  },
+
+  render: function() {
+    var shopList = []
+    var shopObjects = this.props.shopItem
+
+    for(i in shopObjects){ 
+      shopList.push(<ShopMenuItem style={{marginTop:'10px'}} shopname={shopObjects[i]['shopname']} status={shopObjects[i]['status']} product={shopObjects[i]['product']} order={shopObjects[i]['order']} pic={shopObjects[i]['pic']}/>)
+    }
+
+    return (
+      <div>
+        {shopList}
+      </div>
+    );
+  },
+})
 
 var Main = React.createClass({
 
@@ -32,31 +92,37 @@ var Main = React.createClass({
   },
 
   render: function() {
-    var menuItems =  [
-        { route: 'get-started', text: 'Get Started' },
-        { route: 'customization', text: 'Customization' },
-        { route: 'components', text: 'Components' }
+    var menuItems =  [        
+        { 
+          type: MenuItem.Types.LINK, 
+          payload: 'http://localhost:3000/admin_dashboard.html', 
+          text: 'Dashboard'
+        },      
+        { 
+          type: MenuItem.Types.LINK, 
+          payload: 'http://localhost:3000/admin_setting.html', 
+          text: 'Setting'
+        },
+        { 
+          type: MenuItem.Types.LINK, 
+          payload: 'http://localhost:3000/admin_order.html', 
+          text: 'Order'
+        },
     ];
 
-    var containerStyle = {
-      textAlign: 'center',
-      paddingTop: '0px'
-    };
 
-    var menuStyle1 = {
-      marginTop: '10px'
+    var containerStyle = {
+      textAlign: 'left',
     };
 
     var menuStyle2 = {
       textAlign: 'left',
-      width: '80%',
+      width: '90%',
       marginTop: 'auto',
       marginLeft: 'auto',
       marginRight: 'auto',
       marginBottom: '50px'
     };
-
-    var shopList = []
     
     //Dummy Data
     var shopObjects = [
@@ -67,27 +133,15 @@ var Main = React.createClass({
        { shopname: 'GTD', status: 'Closed', product: '3', order: '150', pic: '17' }, 
        { shopname: 'ICN', status: 'Closed', product: '3', order: '200', pic: '18' }
     ]
-    //
 
-    for(i in shopObjects){ 
-      shop = [{
-        payload: i.toString(),
-        shopname: shopObjects[i]['shopname'],
-        status: shopObjects[i]['status'],
-        product: shopObjects[i]['product'],
-        order: shopObjects[i]['order'],
-        pic: shopObjects[i]['pic']
-      }]
-      shopList.push(<Menu style={menuStyle1} menuItems={shop} autoWidth={false} zDepth={2}/>)
-    }
     return (
       <div>
         <div style={{marginBottom: '50px'}}>
         <AppBar style={containerStyle } title='Dashboard' onLeftIconButtonTouchTap={this.leftNavOpen}/>
-        <LeftNav ref='menu' docked={false} menuItems={menuItems} />
+        <LeftNav ref='menu' docked={false} menuItems={menuItems}/>
         </div>
         <div style={menuStyle2}>
-          {shopList}
+          <ShopMenu shopItem={shopObjects}/>
         </div>
       </div>
     );

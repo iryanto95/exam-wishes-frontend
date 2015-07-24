@@ -2,10 +2,11 @@
 
 var React = require('react');
 var mui = require('material-ui');
-var AppBar = require('material-ui/lib/app-bar')
-var LeftNav = require('material-ui/lib/left-nav')
-var Paper = require('material-ui/lib/paper')
-var TextField = require('material-ui/lib/text-field')
+var AppBar = mui.AppBar
+var LeftNav = mui.LeftNav
+var Paper = mui.Paper
+var MenuItem = mui.MenuItem
+var TextField = mui.TextField
 var RaisedButton = mui.RaisedButton;
 var ThemeManager = new mui.Styles.ThemeManager();
 var Colors = mui.Styles.Colors;
@@ -55,14 +56,46 @@ var Main = React.createClass({
     this.refs.description.focus();
   },
   render: function() {
-    var menuItems =  [
-        { route: 'get-started', text: 'Get Started' },
-        { route: 'customization', text: 'Customization' },
-        { route: 'components', text: 'Components' }
+    var menuItems =  [        
+        { 
+          type: MenuItem.Types.LINK, 
+          payload: 'http://localhost:3000/admin_dashboard.html', 
+          text: 'Dashboard'
+        },        { 
+          type: MenuItem.Types.LINK, 
+          payload: 'http://localhost:3000/admin_setting.html', 
+          text: 'Setting'
+        },
+        { 
+          type: MenuItem.Types.LINK, 
+          payload: 'http://localhost:3000/admin_order.html', 
+          text: 'Order'
+        },
+    ];
+
+    var menuItems =  [        
+        { 
+          route: 1,
+          type: MenuItem.Types.LINK, 
+          payload: 'http://localhost:3000/admin_dashboard.html', 
+          text: 'Dashboard'
+        },        
+        { 
+          route: 2, 
+          type: MenuItem.Types.LINK, 
+          payload: 'http://localhost:3000/admin_setting.html', 
+          text: 'Setting'
+        },
+        { 
+          route: 3,
+          type: MenuItem.Types.LINK, 
+          payload: 'http://localhost:3000/admin_order.html', 
+          text: 'Order'
+        },
     ];
 
     var containerStyle = {
-      textAlign: 'center',
+      textAlign: 'left',
     };
 
     var settingPaper = {
@@ -77,23 +110,21 @@ var Main = React.createClass({
       left: '50%',
       transform: 'translate(-50%,-50%)'      
     };
-    
+
     return (
       <div className="adminSetting">
-        <AppBar style={containerStyle } title='Admin Setting' onLeftIconButtonTouchTap={this.leftNavOpen}/>
-        <LeftNav ref='menu' docked={false} menuItems={menuItems} />
+        <AppBar style={containerStyle } title='Setting' onLeftIconButtonTouchTap={this.leftNavOpen}/>
+        <LeftNav ref='menu' docked={false} menuItems={menuItems} selectedIndex={2}/>
         <div className="adminSetting__content">
-          <Paper style={settingPaper} Depth={2}>
+          <Paper style={settingPaper} zDepth={4}>
             <div>
               <TextField ref='shopname' hintText="Input your shop name" floatingLabelText="Shop Name" fullWidth={true} maxLength={50} onChange={this.countShopNameChar} onEnterKeyDown={this.scopeFocused}/>
             </div>
             <div style={{textAlign: 'right'}}>{this.state.charShopName}/50</div>
-            {/*<div>Scope</div>*/}
             <div>
               <TextField ref='scope' hintText="Input the scope of your shop" floatingLabelText="Scope" fullWidth={true} maxLength={50} onChange={this.countScopeChar} onEnterKeyDown={this.descriptionFocused}/>
             </div>
             <div style={{textAlign: 'right'}}>{this.state.charScope}/50</div>
-            {/*<div>Description</div>*/}
             <div>
               <TextField ref='description' hintText="Write your shop description" floatingLabelText="Description" multiLine={true} fullWidth={true} maxLength={120} onChange={this.countDescriptionChar} rows={4}/>
             </div>
