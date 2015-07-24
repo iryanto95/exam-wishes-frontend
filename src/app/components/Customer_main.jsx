@@ -330,6 +330,10 @@ var PackageOrder = React.createClass({
 		};
 	},
 
+	componentDidMount: function() {
+		this.refs.from.setValue(this.props.sender);
+	},
+
 	render: function() {
 		var formStyle = {
 			display: 'block',
@@ -602,7 +606,7 @@ var Customer_main = React.createClass({
 
 	handleAddOrder: function(product,sender,recipient,address,message,image) {
 		var packageOrderListJson = this.state.packageOrderListJson;
-		packageOrderListJson.unshift({image: image, package: product, sender: sender, recipient: recipient, address: address, message: message, id: packageOrderListJson.length});
+		packageOrderListJson.push({image: image, package: product, sender: sender, recipient: recipient, address: address, message: message, id: packageOrderListJson.length});
 		this.setState({packageOrderListJson: packageOrderListJson, totalPrice: Number(this.state.totalPrice) + Number(this.state.packagesJson[product].price)});
 		this.loadOrderList();
 	},
