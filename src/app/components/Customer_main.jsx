@@ -332,6 +332,7 @@ var PackageOrder = React.createClass({
 
 	componentDidMount: function() {
 		this.refs.from.setValue(this.props.sender);
+	    $(this.refs.collapseCard.getDOMNode()).paperCollapse();
 	},
 
 	render: function() {
@@ -369,8 +370,8 @@ var PackageOrder = React.createClass({
 					modal={false} style={{textAlign: 'left'}}>
 					Are you sure you want to delete this order?
 				</Dialog>
-				<Paper zDepth={1} rounded={false} style={formStyle} className="clearfix">
-					{this.props.width > 1200 ?
+				{this.props.width > 1200 ?
+					<Paper zDepth={1} rounded={false} style={formStyle} className="clearfix">
 						<div>
 							<div style={{position: 'relative'}} className="clearfix">
 								<div style={{position: 'absolute', top: '-32px', right: '-32px'}}>
@@ -411,43 +412,57 @@ var PackageOrder = React.createClass({
 								<TextField ref="message" disabled={this.state.disableForm} defaultValue={this.props.message} multiLine={true}/>
 							</div>
 						</div>
-						: <div>
-							<h2>Product</h2>
-							<span style={formValueStyle}>{this.props.package}</span>
-							<br/><br/>
-							<h2>From</h2>
-							<TextField ref="from" disabled={this.state.disableForm} defaultValue={this.props.sender} />
-							<br/><br/>
-							<h2>To</h2>
-							<TextField ref="to" disabled={this.state.disableForm} defaultValue={this.props.recipient} />
-							<br/><br/>
-							<h2>Address</h2>
-							<TextField ref="address" disabled={this.state.disableForm} defaultValue={this.props.address} multiLine={true}/>
-							<br/><br/>
-							<h2>Message</h2>
-							<TextField ref="message" disabled={this.state.disableForm} defaultValue={this.props.message} multiLine={true}/>
-							<br/><br/>
-							{this.props.image != this.props.noImg  ? 
-								<div>
-									Image
-									<img src={this.props.image} style={{width: '100%'}}/>
-									<br/><br/>
+					</Paper>
+					: <div>
+						<div ref="collapseCard" className="collapse-card">
+							<div className="collapse-card__heading">
+								<div className="collapse-card__title">
+									<div className="collapse-card__title__left" style={{color: '#000000'}}>
+										<h2 className="recipient-name">To: {this.props.recipient}</h2>
+									</div>
+									<div className="collapse-card__title__right">
+										<IconButton iconClassName="zmdi zmdi-close"/>
+									</div>
 								</div>
-								: <div>&nbsp;</div>}
-							<div style={{textAlign:'center'}}>
-								<div style={{display:'inline-block', marginRight:'16px'}}>
-									{this.state.disableForm ?
-										<RaisedButton label="Edit" secondary={true} onClick={this.editOrder}/>
-										: <RaisedButton label="Update" secondary={true} onClick={this.updateOrder}/>
-									}
-								</div>
-								<div style={{display:'inline-block', marginLeft:'16px'}}>
-									<RaisedButton label="Delete" primary={true} onClick={this.openConfirmationDialog}/>
+							</div>
+							<div className="collapse-card__body">
+								<h2>Product</h2>
+								<span style={formValueStyle}>{this.props.package}</span>
+								<br/><br/>
+								<h2>From</h2>
+								<TextField ref="from" disabled={this.state.disableForm} defaultValue={this.props.sender} />
+								<br/><br/>
+								<h2>To</h2>
+								<TextField ref="to" disabled={this.state.disableForm} defaultValue={this.props.recipient} />
+								<br/><br/>
+								<h2>Address</h2>
+								<TextField ref="address" disabled={this.state.disableForm} defaultValue={this.props.address} multiLine={true}/>
+								<br/><br/>
+								<h2>Message</h2>
+								<TextField ref="message" disabled={this.state.disableForm} defaultValue={this.props.message} multiLine={true}/>
+								<br/><br/>
+								{this.props.image != this.props.noImg  ? 
+									<div>
+										Image
+										<img src={this.props.image} style={{width: '100%'}}/>
+										<br/><br/>
+									</div>
+									: <div>&nbsp;</div>}
+								<div style={{textAlign:'center'}}>
+									<div style={{display:'inline-block', marginRight:'16px'}}>
+										{this.state.disableForm ?
+											<RaisedButton label="Edit" secondary={true} onClick={this.editOrder}/>
+											: <RaisedButton label="Update" secondary={true} onClick={this.updateOrder}/>
+										}
+									</div>
+									<div style={{display:'inline-block', marginLeft:'16px'}}>
+										<RaisedButton label="Delete" primary={true} onClick={this.openConfirmationDialog}/>
+									</div>
 								</div>
 							</div>
 						</div>
-					}
-				</Paper>
+					</div>
+				}
 			</div>
 		);
 	}
@@ -695,8 +710,10 @@ var Customer_main = React.createClass({
 					{this.state.packageOrderList}
 				</div>
 				{ this.state.windowWidth <= 1000 ?
-					<div style={{backgroundColor: '#1565C0', color: '#ffffff', padding: '16px 0 16px 0', textAlign:'center'}}>
-						Total: ${this.state.totalPrice}
+					<div>
+						<div style={{backgroundColor: '#1565C0', color: '#ffffff', padding: '16px 0 16px 0', textAlign:'center'}}>
+							Total: ${this.state.totalPrice}
+						</div>
 					</div>
 					: <div></div>
 				}
