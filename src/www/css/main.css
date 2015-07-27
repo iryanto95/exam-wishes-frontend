@@ -228,6 +228,7 @@ body {
 }
 .tab .collapse-card__title {
 	margin: 0;
+	white-space: normal;
 }
 
 /* Paper collapse own styling */
@@ -242,35 +243,16 @@ body {
 .collapse-card__title {
 	color: #fff;
 	margin: 0;
-	display: flex;
-	flex-flow: space-between;
 }
 
-.collapse-card__title__left {
-	flex-grow: 1;
-}
-
-.collapse-card__title__left .recipient-name {
+.collapse-card__title__name {
 	font-size: 24px;
 	font-weight: bold;
 }
 
-.collapse-card__title__left .recipient-addr {
+.collapse-card__title__addr {
 	font-style: italic;
 	font-weight: 100;
-}
-
-.collapse-card__title__right {
-	width: 64px;
-	height: 64px;
-	text-align: center;
-	background: rgba(255,255,255,0.5);
-	border-radius: 50%;
-}
-
-.collapse-card__title__right .order-total {
-	line-height: 64px;
-	font-size: 24px;
 }
 
 .collapse-card__body {
@@ -292,12 +274,16 @@ body {
 .order-list__item {
 	display: flex;
 	/*height: 32px;*/
-	padding: 0 32px;
+	padding: 8px 32px;
+	line-height: 1.5;
+}
+
+.order-list__item--last {
+	font-weight: bold;
 }
 
 .list__item__name {
 	flex-grow: 1;
-
 }
 
 /* ====================================

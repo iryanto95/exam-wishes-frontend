@@ -12,12 +12,6 @@ var Colors = mui.Styles.Colors;
 var Card = mui.Card;
 var RaisedButton  = mui.RaisedButton;
 
-/* =====================================
-	TODO:
-	- Dialog
-	- Make card header not fixed height
-======================================== */
-
 var RecipientCard = React.createClass({
 	getInitialState: function () {
 		return {
@@ -59,18 +53,17 @@ var RecipientCard = React.createClass({
 			<div ref="collapseCard" className="collapse-card">
 				<div className="collapse-card__heading" style={{background: bgColor}}>
 					<div className="collapse-card__title">
-						<div className="collapse-card__title__left">
-							<h2 className="recipient-name">{recipient.name}</h2>
-							<p className="recipient-addr">{recipient.address}</p>
-						</div>
-						<div className="collapse-card__title__right">
-							<span className="order-total">{totalOrder}</span>
-						</div>
+						<h2 className="collapse-card__title__name">{recipient.name}</h2>
+						<p className="collapse-card__title__addr">{recipient.address}</p>
 					</div>
 				</div>
 				<div className="collapse-card__body">
 					<ul className="order-list">
 						{orderItems}
+						<li className="order-list__item order-list__item--last" style={{background: bgColor, color: "white"}}>
+							<p className="list__item__name">Total</p>
+							<p className="list__item__qty">{totalOrder} qty</p>
+						</li>
 					</ul>
 					{deliverButton}
 				</div>
