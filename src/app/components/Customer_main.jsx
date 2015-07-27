@@ -13,6 +13,9 @@ var Slider = require('react-slick');
 var MediaQuery = require('react-responsive');
 var Dialog = require('material-ui/lib/dialog');
 var IconButton = require('material-ui/lib/icon-button');
+var List = require('material-ui/lib/lists/list');
+var ListItem = require('material-ui/lib/lists/list-item');
+var Snackbar = require('material-ui/lib/snackbar');
 
 var Package = React.createClass({
 	childContextTypes: {
@@ -415,7 +418,48 @@ var PackageOrder = React.createClass({
 						</div>
 					</Paper>
 					: <div style={{textAlign: 'left'}}>
-						<div ref="collapseCard" style={formStyle} className="collapse-card">
+						<Paper style={{margin: '16px', paddingTop: '16px', paddingBottom: '16px', paddingLeft: '60px', paddingRight: '60px'}} rounded={false} zDepth={1}>
+							<ListItem primaryText={"To: "+this.props.recipient}>
+								<ListItem disabled={true}>
+								<div style={{marginLeft: '-36px'}}>
+									<h2>Product</h2>
+									<span>{this.props.package}</span>
+									<br/><br/>
+									<h2>From</h2>
+									<TextField ref="from" disabled={this.state.disableForm} defaultValue={this.props.sender} />
+									<br/><br/>
+									<h2>To</h2>
+									<TextField ref="to" disabled={this.state.disableForm} defaultValue={this.props.recipient} />
+									<br/><br/>
+									<h2>Address</h2>
+									<TextField ref="address" disabled={this.state.disableForm} defaultValue={this.props.address} multiLine={true}/>
+									<br/><br/>
+									<h2>Message</h2>
+									<TextField ref="message" disabled={this.state.disableForm} defaultValue={this.props.message} multiLine={true}/>
+									<br/><br/>
+									{this.props.image != this.props.noImg  ? 
+										<div>
+											Image
+											<img src={this.props.image} style={{width: '100%'}}/>
+											<br/><br/>
+										</div>
+										: <div>&nbsp;</div>}
+									<div style={{textAlign:'center'}}>
+										<div style={{display:'inline-block', marginRight:'16px'}}>
+											{this.state.disableForm ?
+												<RaisedButton label="Edit" secondary={true} onClick={this.editOrder}/>
+												: <RaisedButton label="Update" secondary={true} onClick={this.updateOrder}/>
+											}
+										</div>
+										<div style={{display:'inline-block', marginLeft:'16px'}}>
+											<RaisedButton label="Delete" primary={true} onClick={this.openConfirmationDialog}/>
+										</div>
+									</div>
+								</div>
+								</ListItem>
+							</ListItem>
+						</Paper>
+						{/*<div ref="collapseCard" style={formStyle} className="collapse-card">
 							<div className="collapse-card__heading">
 								<div className="collapse-card__title">
 									<div className="collapse-card__title__left" style={{color: '#000000'}}>
@@ -427,41 +471,9 @@ var PackageOrder = React.createClass({
 								</div>
 							</div>
 							<div className="collapse-card__body" style={{textAlign: 'left'}}>
-								<h2>Product</h2>
-								<span style={formValueStyle}>{this.props.package}</span>
-								<br/><br/>
-								<h2>From</h2>
-								<TextField ref="from" disabled={this.state.disableForm} defaultValue={this.props.sender} />
-								<br/><br/>
-								<h2>To</h2>
-								<TextField ref="to" disabled={this.state.disableForm} defaultValue={this.props.recipient} />
-								<br/><br/>
-								<h2>Address</h2>
-								<TextField ref="address" disabled={this.state.disableForm} defaultValue={this.props.address} multiLine={true}/>
-								<br/><br/>
-								<h2>Message</h2>
-								<TextField ref="message" disabled={this.state.disableForm} defaultValue={this.props.message} multiLine={true}/>
-								<br/><br/>
-								{this.props.image != this.props.noImg  ? 
-									<div>
-										Image
-										<img src={this.props.image} style={{width: '100%'}}/>
-										<br/><br/>
-									</div>
-									: <div>&nbsp;</div>}
-								<div style={{textAlign:'center'}}>
-									<div style={{display:'inline-block', marginRight:'16px'}}>
-										{this.state.disableForm ?
-											<RaisedButton label="Edit" secondary={true} onClick={this.editOrder}/>
-											: <RaisedButton label="Update" secondary={true} onClick={this.updateOrder}/>
-										}
-									</div>
-									<div style={{display:'inline-block', marginLeft:'16px'}}>
-										<RaisedButton label="Delete" primary={true} onClick={this.openConfirmationDialog}/>
-									</div>
-								</div>
+								
 							</div>
-						</div>
+						</div>*/}
 					</div>
 				}
 			</div>
@@ -621,6 +633,7 @@ var Customer_main = React.createClass({
 	},
 
 	handleAddOrder: function(product,sender,recipient,address,message,image) {
+		this.refs.addSnackbar.show();
 		var packageOrderListJson = this.state.packageOrderListJson;
 		packageOrderListJson.push({image: image, package: product, sender: sender, recipient: recipient, address: address, message: message, id: packageOrderListJson.length});
 		this.setState({packageOrderListJson: packageOrderListJson, totalPrice: Number(this.state.totalPrice) + Number(this.state.packagesJson[product].price)});
@@ -628,16 +641,21 @@ var Customer_main = React.createClass({
 	},
 
 	deleteOrder: function(id){
+		this.refs.deleteSnackbar.show();
 		var packageOrderListJson = this.state.packageOrderListJson;
+		var totalPrice = this.state.totalPrice;
 		for(var i = 0; i < this.state.packageOrderListJson.length; i++){
-			if(packageOrderListJson[i].id == id)
+			if(packageOrderListJson[i].id == id){
+				totalPrice -=  Number(this.state.packagesJson[id].price);
 				packageOrderListJson.splice(i,1);
+			}
 		}
-		this.setState({packageOrderListJson: packageOrderListJson});
+		this.setState({packageOrderListJson: packageOrderListJson, totalPrice: totalPrice});
 		this.loadOrderList();
 	},
 
 	updateOrder: function(id,sender,recipient,address,message) {
+		this.refs.updateSnackbar.show();
 		var packageOrderListJson = this.state.packageOrderListJson;
 		packageOrderListJson[id].sender = sender;
 		packageOrderListJson[id].recipient = recipient;
@@ -672,6 +690,12 @@ var Customer_main = React.createClass({
 
 	closeDialog: function() {
 		this.refs.dialog.dismiss();
+	},
+
+	closeSnackbar: function() {
+		this.refs.addSnackbar.dismiss();
+		this.refs.updateSnackbar.dismiss();
+		this.refs.deleteSnackbar.dismiss();
 	},
 
 	render: function() {
@@ -718,6 +742,9 @@ var Customer_main = React.createClass({
 					</div>
 					: <div></div>
 				}
+				<Snackbar ref="addSnackbar" message="Your order has been added" action="OK" onActionTouchTap={this.closeSnackbar} autoHideDuration={2000} />
+				<Snackbar ref="updateSnackbar" message="Your order has been updated" action="OK" onActionTouchTap={this.closeSnackbar} autoHideDuration={2000} />
+				<Snackbar ref="deleteSnackbar" message="Your order has been deleted" action="OK" onActionTouchTap={this.closeSnackbar} autoHideDuration={2000} />
 			</div>
 		);
 	},
