@@ -177,37 +177,117 @@ body {
 	padding: 16px;
 }
 
-.colTab__table {
+.table {
 	width: 100%;
 	border: solid 1px #E4E4E4;
 }
 
-.colTab__table__row {
+.table__row {
 	text-align: center;
 	font-size: 16px;
 	line-height: 1.5;
 }
 
-.colTab__table__head {
+.table__head {
 	color: #fff;
 	font-weight: bold;
 }
 
-.colTab__table__row__head, .colTab__table__data {
+.table__row__head, .table__data {
 	padding: 16px 8px;
 	vertical-align: middle;
 	box-sizing: border-box;
 }
 
-.colTab__table__data--checkbox {
+.table__data--checkbox {
 	text-align: start;
 }
 
-.colTab__table__data--checkbox > div {
+.table__data--checkbox > div {
 	display: block !important;
 	width: 24px !important;
 	margin: 0 auto;
 }
+
+/* Overwrite paper collapse styling */
+.tab .collapse-card.active {
+	margin: 0;
+}
+.tab .collapse-card.active .collapse-card__heading:hover::after{
+	content:""
+}
+.tab .collapse-card .collapse-card__heading:hover::after{
+	content:""
+}
+.tab .collapse-card {
+	border: none;
+}
+.tab .collapse-card__heading, .tab .collapse-card__body {
+	padding: 24px;
+}
+.tab .collapse-card__title {
+	margin: 0;
+	white-space: normal;
+}
+
+/* Paper collapse own styling */
+.collapse-card, .tab .collapse-card.active {
+	margin-bottom: 16px;
+}
+
+.collapse-card:last-child {
+	margin: 0;
+}
+
+.collapse-card__title {
+	color: #fff;
+	margin: 0;
+}
+
+.collapse-card__title__name {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.collapse-card__title__addr {
+	font-style: italic;
+	font-weight: 100;
+}
+
+.collapse-card__body {
+	text-align: center;
+}
+
+.order-list {
+	font-size: 16px;
+	line-height: 32px;
+	color: #000;
+	text-align: left;
+	margin: 0 0 16px 0;
+}
+
+.order-list__item:nth-child(even) {
+	background: #EAEAEA;
+}
+
+.order-list__item {
+	display: flex;
+	/*height: 32px;*/
+	padding: 8px 32px;
+	line-height: 1.5;
+}
+
+.order-list__item--last {
+	font-weight: bold;
+}
+
+.list__item__name {
+	flex-grow: 1;
+}
+
+/* ====================================
+ *	Admin Setting
+ * ==================================== */
 
 .adminSetting {
   display: -webkit-box;

@@ -17,6 +17,10 @@ module.exports = {
     src: src + "/www/**",
     dest: dest
   },
+  autoprefixer: {
+    src: dest + "/css/main.css",
+    dest: dest + "/css"
+  },
   browserify: {
     // Enable source maps
     debug: true,
@@ -29,6 +33,7 @@ module.exports = {
                     {entries: src + '/app/pic_main_app.jsx', dest: dest, outputName: 'pic_main_app.js'},
                     {entries: src + '/app/admin_dashboard_app.jsx', dest: dest, outputName: 'admin_dashboard_app.js'},
                     {entries: src + '/app/admin_setting_app.jsx', dest: dest, outputName: 'admin_setting_app.js'},
-                    {entries: src + '/app/admin_order_app.jsx', dest: dest, outputName: 'admin_order_app.js'}]
+                    {entries: src + '/app/admin_order_app.jsx', dest: dest, outputName: 'admin_order_app.js'}
+                    ]
   	}
 };
