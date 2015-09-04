@@ -93,7 +93,19 @@ var Table = React.createClass({
 var Main = React.createClass({
   getInitialState: function() {
       return {
-        orderItems: [
+        orderItems: null
+      };
+  },
+  childContextTypes: {
+    muiTheme: React.PropTypes.object
+  },
+  getChildContext: function() {
+    return {
+      muiTheme: ThemeManager.getCurrentTheme()
+    };
+  },
+  componentWillMount: function(){
+    orderList = [
           {
             ID: 1, 
             sender: { name: 'Jonathan Lie', address: '36 Nanyang Crescent Singapore 637635 Hall 15 #71-5-14', phone: '90610677'},
@@ -137,15 +149,7 @@ var Main = React.createClass({
             PIC: { name: 'Albert Datui', hall: 'Non Hall', phone: '90610677' }
           }
         ]
-      };
-  },
-  childContextTypes: {
-    muiTheme: React.PropTypes.object
-  },
-  getChildContext: function() {
-    return {
-      muiTheme: ThemeManager.getCurrentTheme()
-    };
+    this.setState({orderItems: orderList})
   },
   leftNavOpen: function(){
     this.refs.menu.toggle();

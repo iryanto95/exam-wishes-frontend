@@ -26,7 +26,8 @@ var ShopMenuItem = React.createClass({
 
     return (
       <div style={this.props.style}>
-        <Paper zDepth={3} className="clearfix shopmenu-item" style={{paddingLeft:'32px', paddingRight:'32px', paddingTop:'32px', paddingBottom:'32px'}} >
+        <a href={this.props.href}>
+        <Paper zDepth={3} className="clearfix shopmenu-item" style={{paddingLeft:'32px', paddingRight:'32px', paddingTop:'32px', paddingBottom:'32px', color:'black'}} >
           <div style={{float:'left'}}>
             <p style={{fontSize:'300%', marginTop:'8px'}}>{this.props.shopname} Shop</p>
             <p style={{fontSize:'200%', marginTop:'32px'}}>Status: {this.props.status}</p>
@@ -37,6 +38,7 @@ var ShopMenuItem = React.createClass({
             <p style={{fontSize:'150%', marginTop:'16px'}}>{this.props.pic} PICs </p>
           </div>
         </Paper>
+        </a>
       </div>
     );
   },
@@ -58,7 +60,7 @@ var ShopMenu = React.createClass({
     var shopObjects = this.props.shopItem
 
     for(i in shopObjects){ 
-      shopList.push(<ShopMenuItem style={{marginTop:'10px'}} shopname={shopObjects[i]['shopname']} status={shopObjects[i]['status']} product={shopObjects[i]['product']} order={shopObjects[i]['order']} pic={shopObjects[i]['pic']}/>)
+      shopList.push(<ShopMenuItem href={shopObjects[i]['URL']} style={{marginTop:'10px'}} shopname={shopObjects[i]['shopname']} status={shopObjects[i]['status']} product={shopObjects[i]['product']} order={shopObjects[i]['order']} pic={shopObjects[i]['pic']}/>)
     }
 
     return (
@@ -70,21 +72,35 @@ var ShopMenu = React.createClass({
 })
 
 var Main = React.createClass({
-
+  getInitialState: function() {
+    return {
+      shopObjects: null
+    };
+  },
   childContextTypes: {
     muiTheme: React.PropTypes.object
   },
-
   getChildContext: function() {
     return {
       muiTheme: ThemeManager.getCurrentTheme()
     };
   },
-
   componentWillMount: function() {
     ThemeManager.setPalette({
       accent1Color: Colors.deepOrange500
     });
+
+    //Dummy Data from DB
+    var shopList = [
+       { shopname: 'PINTU', status: 'Open', product: '3', order: '100', pic: '16', URL: 'http://google.com'}, 
+       { shopname: 'GTD', status: 'Closed', product: '3', order: '150', pic: '17', URL: 'http://yahoo.com'}, 
+       { shopname: 'ICN', status: 'Closed', product: '3', order: '200', pic: '18', URL: 'http://bing.com'},
+       { shopname: 'PINTU', status: 'Open', product: '3', order: '100', pic: '16', URL: 'http://mozilla.com'}, 
+       { shopname: 'GTD', status: 'Closed', product: '3', order: '150', pic: '17', URL: 'http://apple.com'}, 
+       { shopname: 'ICN', status: 'Closed', product: '3', order: '200', pic: '18', URL: 'http://microsoft.com'}
+    ]
+
+    this.setState({shopObjects: shopList})
   },
 
   leftNavOpen: function(){
@@ -124,24 +140,14 @@ var Main = React.createClass({
       marginBottom: '50px'
     };
     
-    //Dummy Data
-    var shopObjects = [
-       { shopname: 'PINTU', status: 'Open', product: '3', order: '100', pic: '16' }, 
-       { shopname: 'GTD', status: 'Closed', product: '3', order: '150', pic: '17' }, 
-       { shopname: 'ICN', status: 'Closed', product: '3', order: '200', pic: '18' },
-       { shopname: 'PINTU', status: 'Open', product: '3', order: '100', pic: '16' }, 
-       { shopname: 'GTD', status: 'Closed', product: '3', order: '150', pic: '17' }, 
-       { shopname: 'ICN', status: 'Closed', product: '3', order: '200', pic: '18' }
-    ]
-
     return (
       <div>
         <div style={{marginBottom: '50px'}}>
-        <AppBar style={containerStyle } title='Dashboard' onLeftIconButtonTouchTap={this.leftNavOpen}/>
+        <AppBar style={containerStyle} title='Dashboard' onLeftIconButtonTouchTap={this.leftNavOpen}/>
         <LeftNav ref='menu' docked={false} menuItems={menuItems}/>
         </div>
         <div style={menuStyle2}>
-          <ShopMenu shopItem={shopObjects}/>
+          <ShopMenu shopItem={this.state.shopObjects}/>
         </div>
       </div>
     );
